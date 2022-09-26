@@ -212,6 +212,7 @@ class FileHandlePage extends JFrame implements ActionListener {
 }
 
 class WelcomePage extends JFrame implements ActionListener {
+    /* Assets of Welcome Page */
     String superuser = "pranshu";
     String superpass = "pass1234";
     JFrame frame = new JFrame();
