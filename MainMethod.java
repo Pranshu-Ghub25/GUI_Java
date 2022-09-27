@@ -1,4 +1,6 @@
 import java.awt.*;
+
+import javax.naming.directory.BasicAttributes;
 import javax.swing.*;
 import java.util.*;
 import java.awt.event.*;
@@ -12,13 +14,13 @@ class FileHandlePage extends JFrame implements ActionListener {
     JPanel fpanel2 = new JPanel();
     JPanel fpanel3 = new JPanel();
     JPanel fpanelbuttons = new JPanel();
-    JButton b1 = new JButton("Write ");
-    JButton b2 = new JButton("Read ");
+    JButton b1 = new JButton(" Write ");
+    JButton b2 = new JButton(" Read ");
     JButton b3 = new JButton("Append");
     JButton b4 = new JButton("Search");
-    JButton b5 = new JButton("Button1");
-    JButton b6 = new JButton("Button2");
-    JButton b7 = new JButton("Button2");
+    JButton b5 = new JButton(" Info ");
+    JButton b6 = new JButton("Delete");
+    JButton b7 = new JButton(" Exit ");
     JTextArea txtarea = new JTextArea();
     JTextField searcharea = new JTextField();
     JTextField tCountfield = new JTextField();
@@ -68,25 +70,31 @@ class FileHandlePage extends JFrame implements ActionListener {
         b3.setBounds(185, 405, 80, 102);
         b3.setBackground(color2);
         b3.setForeground(Color.white);
+        b3.addActionListener(this);
 
         b4.setFont(new Font("Serif", Font.PLAIN, 22));
         b4.setBounds(185, 405, 80, 102);
         b4.setBackground(color2);
         b4.setForeground(Color.white);
+        b4.disable();
 
         b5.setFont(new Font("Serif", Font.PLAIN, 22));
         b5.setBounds(185, 405, 80, 102);
         b5.setBackground(color2);
         b5.setForeground(Color.white);
+        b5.addActionListener(this);
 
         b6.setFont(new Font("Serif", Font.PLAIN, 22));
         b6.setBounds(185, 405, 80, 102);
         b6.setBackground(color2);
         b6.setForeground(Color.white);
+        b6.addActionListener(this);
+
         b7.setFont(new Font("Serif", Font.PLAIN, 22));
         b7.setBounds(185, 405, 80, 102);
         b7.setBackground(color2);
-        b7.setForeground(Color.white);
+        b7.setForeground(Color.red);
+        b7.addActionListener(this);
 
         // *********Label**********
         JLabel fPanel1title = new JLabel("File Handling Operations", SwingConstants.CENTER);
@@ -162,17 +170,55 @@ class FileHandlePage extends JFrame implements ActionListener {
         wr.write(s);
         wr.close();
     }
-    public void append(String s) throws Exception {
-        Writer wr = new FileWriter("text.txt");
-        wr.write(s);
-        wr.close();
+    public void appender() throws Exception {
+        
+            BufferedWriter out = new BufferedWriter(
+                new FileWriter("text.txt", true));
+ 
+            String str=txtarea.getText();
+            out.write(str);
+            out.close();
+        
     }
+    
+    public void info(){
+        
+        File f = new File("text.txt");
+        if(f.exists()){
+            String str1 = ("Name: "+ f.getName());
+            String str2 = ("Path: "+ f.getAbsolutePath());
+            String str3=("Size: "+ f.length());
+            String str4=("Writeable: "+ f.canWrite());
+            String str5=("Readable: "+ f.canRead());
+            String fstr=str1+ "\r\n"+str2+ "\r\n"+str3+ "\r\n"+str4+ "\r\n"+str5;
+            txtarea.setText(fstr);
+           
+        }else{
+            System.out.println("The File does not exist");
+        }
+    }
+    // public void searcher(String s){
+    //     public static void main( String[] args ) throws IOException {
+    //         String[] list;
+    //         String  search;
+        
+    //         list = load_list( "words.txt" );
+    //         search = prompt_user( "\nEnter a word to search for: " );
+    //         while ( ! search.equals( "quit" ) ) {
+    //           System.out.println( "Word '" + search + "' was" +
+    //                 ( ( find_word( search, list ) ) ? "" : " NOT" ) +
+    //                 " found." );
+    //           search = prompt_user( "\nEnter a word to search for: " );
+    //         }    
+    //         System.out.println();
+    //     }
+    // }
     public void reader() throws Exception {
         // Reader r=new FileReader("text.txt");
         Reader re = new FileReader("text.txt");
         int data = re.read();
         int i=0;
-        char[] chararr=new char[50];
+        char[] chararr=new char[150];
         chararr[0]=(char) data;
         while (data != -1) {
             // System.out.print((char) data);
@@ -184,7 +230,6 @@ class FileHandlePage extends JFrame implements ActionListener {
         }
         String str=String.valueOf(chararr);
         txtarea.setText(str);
-        System.out.print(str);
         re.close();
     }
 
@@ -193,6 +238,7 @@ class FileHandlePage extends JFrame implements ActionListener {
             String txt = txtarea.getText();
 
             try {
+                txtarea.setText("");
                 this.writer(txt);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -200,19 +246,43 @@ class FileHandlePage extends JFrame implements ActionListener {
         }
         if (s.getSource() == b2) {
             try {
+                
                 this.reader();
+                fileframe.setVisible(true);
+                // txtarea.setText("");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            
 
         }
-        fileframe.setVisible(true);
+        if (s.getSource() == b5) {
+                txtarea.setText("");
+                this.info();
+                fileframe.setVisible(true);
+
+        }
+        if (s.getSource() == b3) {
+            try {
+                this.appender();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        if (s.getSource() == b6) {
+        
+                txtarea.setText("");
+                fileframe.setVisible(true);
+            }
+        if (s.getSource() == b7) {
+                fileframe.dispose();
+        }
+        
     }
 
 }
 
 class WelcomePage extends JFrame implements ActionListener {
-    /* Assets of Welcome Page */
     String superuser = "pranshu";
     String superpass = "pass1234";
     JFrame frame = new JFrame();
@@ -251,9 +321,10 @@ class WelcomePage extends JFrame implements ActionListener {
 
         lb1.setFont(new Font("Serif", Font.BOLD, 22));
         lb1.setBounds(210, 165, 135, 37);
+        lb1.addActionListener(this);
         lb2.setFont(new Font("Serif", Font.BOLD, 22));
         lb2.setBounds(357, 165, 135, 37);
-        lb1.addActionListener(this);
+        lb2.addActionListener(this);
 
         // *********Label**********
         JLabel login = new JLabel("Log in Page", SwingConstants.CENTER);
@@ -319,6 +390,9 @@ class WelcomePage extends JFrame implements ActionListener {
                 frame.dispose();
                 FileHandlePage ob = new FileHandlePage();
             }
+        }
+        if (s.getSource() == lb2) {
+            frame.dispose();
         }
     }
 }
