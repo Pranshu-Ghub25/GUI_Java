@@ -348,7 +348,7 @@ public class FileHandlePage extends javax.swing.JFrame {
     
     public void reader(boolean searchAuth) {
         // Reader r=new FileReader("text.txt");
-        try{
+       try{
         Reader re = new FileReader("text.txt");
         int data = re.read();
         int i=1;
