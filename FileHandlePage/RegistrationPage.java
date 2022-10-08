@@ -253,9 +253,9 @@ public class RegistrationPage extends javax.swing.JFrame {
                 Serial++;
             }while(rs.next());
             System.out.println(Serial);
-            String query = " INSERT INTO studentdata (Serial_no,Student_fname,Student_lname,StudentID,age,mail_id) VALUES ( "+Serial+", '"+Fname+"','"+Lname+"','"+SId+"','"+age+"','"+mailid+"')";
+            String query = " INSERT INTO studentdata (Serial_no,Student_fname,Student_lname,StudentID,age,mail_id,uni_password) VALUES ( "+Serial+", '"+Fname+"','"+Lname+"','"+SId+"','"+age+"','"+mailid+"','"+Password+"')";
                             //Storing MySQL query in A string variable
-            String pquery= " UPDATE studentdata SET uni_password = '"+Password+"'WHERE uni_password='00' ";
+            
                     
             statement.executeUpdate(query);
             statement.executeUpdate(pquery);
