@@ -21,8 +21,7 @@ public class WelcomePage extends javax.swing.JFrame  {
      * Creates new form WelcomePage
      */
     
-//   String  superuser ="Admin";
-//    String superpass="pass1234";
+
     public WelcomePage() {
         initComponents();
     }
@@ -221,53 +220,50 @@ public class WelcomePage extends javax.swing.JFrame  {
   
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (evt.getSource() == jButton1) {
+             Connection con;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student" ,"root","123456");//Crating connection with database
-            
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student" ,"root","123456");//Crating connection with database
             Statement  statement = con.createStatement();//crating statement object
             System.out.print("Connection established");
-            String x = String.valueOf(jTextField1.getText());
-            String y = String.valueOf(jPasswordField1.getPassword());
+            
+            String x = String.valueOf(jTextField1.getText());//Extracting text from "Username Field"
+            String y = String.valueOf(jPasswordField1.getPassword()); //Extracting text from "Password Field "
             String query = "select * from student.studentdata where StudentID = '" + x + "' and uni_password = '"+y+"'";//Storing MySQL query in A string variable
             ResultSet resultSet = statement.executeQuery(query);//executing query and storing result in ResultSet
-           
-            int temp=0;
-            
-              
+         
              //Retrieving details from the database and storing it in the String variables
                 
                
-                if (resultSet.next()) {   
+                if (resultSet.next()) {   //If any existing student id and unique password  matches with input condition become true ,enters the block
                     dispose();
                     FileHandlePage ob = new FileHandlePage();
                     ob.setVisible(true);
           
                 }
-                else  {
+                else  { //if there are no matching entries user must register himself
                 JOptionPane jOptionPane1=new JOptionPane();
                 
                 jOptionPane1.showMessageDialog(null, "Register Yourself to Login","No Such Username Found.",JOptionPane.WARNING_MESSAGE);//When invalid username is entered
             }
-            
-                
            
-           con.close();
         }
          catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        catch (ClassNotFoundException ex) {
+        catch (ClassNotFoundException ex) { 
                 System.out.print(ex.getMessage());
             }
-
+        finally{
+             con.close(); //if any exception happens or not connection will be closed
+        }
         
         }
     
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (evt.getSource() == jButton3) {
+        if (evt.getSource() == jButton3) {//invoke registration frame
                    dispose();
                    RegistrationPage rp=new RegistrationPage();
                    rp.setVisible(true);
