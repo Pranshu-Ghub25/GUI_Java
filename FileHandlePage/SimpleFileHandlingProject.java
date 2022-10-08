@@ -15,7 +15,7 @@ public class SimpleFileHandlingProject {
      */
     public static void main(String[] args) {
         WelcomePage ob=new WelcomePage();
-        new WelcomePage().setVisible(true);
+       ob.setVisible(true);
 
     }
     
